@@ -1,4 +1,7 @@
 # Winter Supplement Test Rules Engine
+Implement the project and tests according to the requirements.
+For now, if the input JSON is invalid (e.g., missing fields, extra keys, or values exceeding the allowed range such as numberOfChildren being out of the int range), 
+output's numeric fields will be set to 0.0, and boolean be set to false, string be set to "invalid-input".
 
 ## How to Run on Local Machine
 ### 1. Set up development environment

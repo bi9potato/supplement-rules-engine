@@ -37,9 +37,16 @@ public class JsonUtilTest {
     public void testInvalidJson() {
         String invalidJson = "{invalid json}";
 
-        Assertions.assertThrows(JsonProcessingException.class, () -> {
-            JsonUtil.fromJson(invalidJson, InputData.class);
-        });
+//        Assertions.assertThrows(JsonProcessingException.class, () -> {
+//            JsonUtil.fromJson(invalidJson, InputData.class);
+//        });
+
+        InputData result = JsonUtil.fromJson(invalidJson, InputData.class);
+
+        Assertions.assertEquals("invalid-input", result.getId());
+        Assertions.assertEquals(0, result.getNumberOfChildren());
+        Assertions.assertEquals("invalid-input", result.getFamilyComposition());
+        Assertions.assertFalse(result.isFamilyUnitInPayForDecember());
     }
 
 
