@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.ryan.rulesengine.IntegrationTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.794 s -- in com.ryan.rulesengine.IntegrationTest
