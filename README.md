@@ -6,10 +6,10 @@
    2. Maven 3.x (tested using Maven 3.9.9)
 ### 2. Update config properties  
 - In `src/main/resources/config.properties` 
-   1. Update `topicId`  to the lasted `MQTT topic ID` shown on the web app
+   1. Update `topicId`  to the lasted **`MQTT topic ID`** shown on the web app. Please **restart** app when you update this property.
    2. Update `mqtt.url` to the correct MQTT broker URL
    3. Update `mqtt.input.base` and `mqtt.output.base` to the correct input and output topic prefix
-   4. Updating `mqtt.client.id.base` may be **not necessary**, cause `App.java` appends it with UUID and currentTimeMillis to make unique  
+   4. Updating `mqtt.client.id.base` may be **not necessary**, because `App.java` appends it with UUID and currentTimeMillis to make unique  
 ### 3. Run the app
    **Note**: Make sure MQTT broker is running, and all properties set up properly.
    1. Run the app in IDE (IDEA, Eclipse etc.) by executing the `App.java` in `src/main/java/com/ryan/rulesengine/`
