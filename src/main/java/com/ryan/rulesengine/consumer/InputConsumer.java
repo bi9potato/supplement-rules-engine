@@ -19,24 +19,31 @@ public class InputConsumer {
     private SupplementHandler supplementHandler;
     private OutputProducer outputProducer;
 
-    /**
-     * generate a consumer (atually a service layer), accepting data from webapp,
-     * passing it to handler and output result to web app then.
-     * @param eventBus
-     * @param topicId
-     */
-    public InputConsumer(EventBus eventBus, String topicId) {
+
+//    public InputConsumer(EventBus eventBus, String topicId) {
+//
+//        this.inTopic = ConfigUtil.getProp("mqtt.input.base") + topicId;
+//        this.eventBus = eventBus;
+//        this.supplementHandler = new SupplementHandler();
+//        this.outputProducer = new OutputProducer(eventBus, topicId);
+//
+//        System.out.println("input topic: " + inTopic);
+//
+//    }
+
+    public InputConsumer(EventBus eventBus, String topicId,
+                         SupplementHandler supplementHandler, OutputProducer outputProducer) {
 
         this.inTopic = ConfigUtil.getProp("mqtt.input.base") + topicId;
         this.eventBus = eventBus;
-        this.supplementHandler = new SupplementHandler();
-        this.outputProducer = new OutputProducer(eventBus, topicId);
+        this.supplementHandler = supplementHandler;
+        this.outputProducer = outputProducer;
 
         System.out.println("input topic: " + inTopic);
 
     }
 
-//    start listening
+//    start listening to the input MQTT topic, and process incoming data then pass to handler and producer.
     public void start() throws MqttException {
         eventBus.subscribe(inTopic, new IMqttMessageListener() {
             @Override

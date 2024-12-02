@@ -16,6 +16,7 @@ public class OutputProducer {
         System.out.println("output topic: " + outTopic);
     }
 
+//    publish payload to the output MQTT topic with QoS 1
     public void produce(String outputPayLoad) throws MqttException {
         eventBus.publish(outTopic, outputPayLoad, 1);
     }

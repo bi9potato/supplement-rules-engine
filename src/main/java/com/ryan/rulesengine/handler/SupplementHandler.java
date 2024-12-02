@@ -33,9 +33,10 @@ public class SupplementHandler {
         }
     }
 
-//    do computation
+//    do computation of supplement amounts
     public OutputData start(InputData inputData) {
         try {
+//            validate input date first
             validateInput(inputData);
 
             OutputData outputData = new OutputData();
@@ -46,11 +47,12 @@ public class SupplementHandler {
             String familyComposition = inputData.getFamilyComposition();
             boolean familyUnitInPayForDecember = inputData.isFamilyUnitInPayForDecember();
 
-//        set outpudata
+//          initialize amounts
             double childrenAmount = 0.0;
             double baseAmount = 0.0;
             double supplementAmount = 0.0;
 
+//            if eligible
             if (familyUnitInPayForDecember) {
                 if ("single".equalsIgnoreCase(familyComposition) && numberOfChildren == 0) {
                     baseAmount = 60.0;
@@ -63,7 +65,7 @@ public class SupplementHandler {
                 supplementAmount = baseAmount + childrenAmount;
             }
 
-
+//            Set output data
             outputData.setBaseAmount(baseAmount);
             outputData.setChildrenAmount(childrenAmount);
             outputData.setSupplementAmount(supplementAmount);
@@ -71,8 +73,10 @@ public class SupplementHandler {
             outputData.setEligible(familyUnitInPayForDecember);
 
             return outputData;
+
         } catch (Exception e) {
 
+//            if input is invalid, return all zero and false.
             System.out.println(e.getMessage());
 
             if (inputData == null) return null;

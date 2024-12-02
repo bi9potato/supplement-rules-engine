@@ -4,7 +4,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class EventBus {
-//    https://www.emqx.com/en/blog/how-to-use-mqtt-in-java
+
     private MqttClient mqttClient;
 
 //    for test
@@ -12,11 +12,13 @@ public class EventBus {
         this.mqttClient = mqttClient;
     }
 
+//    create an EventBus with the MQTT broker URL and client ID
     public EventBus(String url, String clientId) throws MqttException {
         mqttClient = new MqttClient(url, clientId, new MemoryPersistence());
         connect();
     }
 
+//    connect to MQTT broker
     public void connect() throws MqttException {
 
         MqttConnectOptions options = new MqttConnectOptions();

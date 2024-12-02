@@ -3,8 +3,10 @@ package com.ryan.rulesengine;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ryan.rulesengine.consumer.InputConsumer;
 import com.ryan.rulesengine.eventbus.EventBus;
+import com.ryan.rulesengine.handler.SupplementHandler;
 import com.ryan.rulesengine.model.InputData;
 import com.ryan.rulesengine.model.OutputData;
+import com.ryan.rulesengine.producer.OutputProducer;
 import com.ryan.rulesengine.util.JsonUtil;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,9 @@ public class IntegrationTest {
         String clientId = "integrationTest1-" + System.currentTimeMillis();
 
         EventBus eventBus = new EventBus(url, clientId);
-        InputConsumer inputConsumer = new InputConsumer(eventBus, topicId);
+        InputConsumer inputConsumer = new InputConsumer(eventBus, topicId,
+                new SupplementHandler(),
+                new OutputProducer(eventBus, topicId));
 
         inputConsumer.start();
 
@@ -57,7 +61,10 @@ public class IntegrationTest {
         String inputPayLoad = JsonUtil.toJson(inputData);
         eventBus.publish(inputTopic, inputPayLoad, 1);
 
-        boolean msgReceived = latch.await(8, TimeUnit.SECONDS);
+        int waitingTime = 30;
+        boolean msgReceived = latch.await(waitingTime, TimeUnit.SECONDS);
+
+        assertTrue(msgReceived, "Message not been received within seconds:" + waitingTime);
 
         eventBus.disconnect();
 

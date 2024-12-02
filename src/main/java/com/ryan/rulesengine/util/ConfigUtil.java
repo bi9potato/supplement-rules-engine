@@ -1,7 +1,5 @@
 package com.ryan.rulesengine.util;
 
-import com.ryan.rulesengine.consumer.InputConsumer;
-
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -9,6 +7,7 @@ public class ConfigUtil {
 
     private static final Properties prop = new Properties();
 
+//    static block to load properties
     static {
         ClassLoader classLoader =ConfigUtil.class.getClassLoader();
 
@@ -26,6 +25,7 @@ public class ConfigUtil {
         }
     }
 
+//    get value of property
     public static String getProp(String key) {
         return prop.getProperty(key);
     }
