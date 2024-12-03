@@ -9,14 +9,17 @@ import com.ryan.rulesengine.model.OutputData;
 import com.ryan.rulesengine.producer.OutputProducer;
 import com.ryan.rulesengine.util.JsonUtil;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled("Dependent on external MQTT broker")
 public class IntegrationTest {
 
     @Test
@@ -45,26 +48,43 @@ public class IntegrationTest {
 
         CountDownLatch latch = new CountDownLatch(1);
 
+        AtomicReference<OutputData> outputData = new AtomicReference<>();
         eventBus.subscribe(outputTopic , (topic, msg) -> {
-            String payload = new String(msg.getPayload());
-            OutputData outputData = JsonUtil.fromJson(payload, OutputData.class);
-
-            assertEquals("integrationTest1", outputData.getId());
-            assertTrue(outputData.isEligible());
-            assertEquals(120.0, outputData.getBaseAmount());
-            assertEquals(60.0, outputData.getChildrenAmount());
-            assertEquals(180.0, outputData.getSupplementAmount());
 
             latch.countDown();
+
+            String payload = new String(msg.getPayload());
+            outputData.set(JsonUtil.fromJson(payload, OutputData.class));
+
+//            System.out.println(outputData.get().getId());
+//            System.out.println(outputData.get().isEligible());
+//            System.out.println(outputData.get().getBaseAmount());
+//            System.out.println(outputData.get().getChildrenAmount());
+//            System.out.println(outputData.get().getSupplementAmount());
+
+
+//            assertEquals("integrationTest1", outputData.getId());
+//            assertTrue(outputData.isEligible());
+//            assertEquals(120.0, outputData.getBaseAmount());
+//            assertEquals(60.0, outputData.getChildrenAmount());
+//            assertEquals(10.0, outputData.getSupplementAmount());
+
+
         });
 
         String inputPayLoad = JsonUtil.toJson(inputData);
         eventBus.publish(inputTopic, inputPayLoad, 1);
 
+
         int waitingTime = 30;
         boolean msgReceived = latch.await(waitingTime, TimeUnit.SECONDS);
-
         assertTrue(msgReceived, "Message not been received within seconds:" + waitingTime);
+
+        assertEquals("integrationTest1", outputData.get().getId());
+        assertTrue(outputData.get().isEligible());
+        assertEquals(120.0, outputData.get().getBaseAmount());
+        assertEquals(60.0, outputData.get().getChildrenAmount());
+        assertEquals(180.0, outputData.get().getSupplementAmount());
 
         eventBus.disconnect();
 
