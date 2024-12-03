@@ -5,8 +5,8 @@ output's numeric fields will be set to 0.0, and boolean be set to false, string 
 
 ## How to Run on Local Machine
 ### 1. Set up development environment
-   1. Java 8 or higher (tested using Java 1.8)
-   2. Maven 3.x (tested using Maven 3.9.9)
+   1. **Java** 8 or higher (tested using Java 1.8)
+   2. **Maven** 3.x (tested using Maven 3.9.9)
 ### 2. Update config properties  
 - In `src/main/resources/config.properties` 
    1. Update `topicId`  to the lasted **`MQTT topic ID`** shown on the web app. Please **restart** app when you update this property.
@@ -15,6 +15,19 @@ output's numeric fields will be set to 0.0, and boolean be set to false, string 
    4. Updating `mqtt.client.id.base` may be **not necessary**, because `App.java` appends it with UUID and currentTimeMillis to make unique  
 ### 3. Run the app
    **Note**: Make sure MQTT broker is running, and all properties set up properly.
+  #### Method 1: Using Command Line
+
+1. Navigate to the project root directory
+2. Run the following commands:
+   ```bash
+   mvn compile
+   mvn package
+   ```
+3. Run the generated JAR file. Replace <generated-jar-file> with the name of the .jar file generated under target folder (e.g., supplement-rules-engine-1.0-SNAPSHOT-shaded.jar):
+  ```bash
+     java -jar target/<generated-jar-file-name>
+   ```
+#### Method 2: Using IDE
    1. Run the app in IDE (IDEA, Eclipse etc.) by executing the `App.java` in `src/main/java/com/ryan/rulesengine/`
 ### 4. Now you can send data to MQTT broker!
 ### 5. Shutdown
